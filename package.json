@@ -1,7 +1,7 @@
 {
   "name": "grunt-accessibility-html-reporter",
-  "description": "Converts the JSON report of the grunt-accessibility task to HTML.",
-  "version": "0.0.1",
+  "description": "Formats JSON report of the grunt-accessibility task to HTML.",
+  "version": "0.1.0",
   "homepage": "https://github.com/prantlf/grunt-accessibility-html-reporter",
   "author": {
     "name": "Ferdinand Prantl",
@@ -25,23 +25,19 @@
   "engines": {
     "node": ">= 4"
   },
+  "main": "index.js",
   "scripts": {
-    "test": "grunt"
+    "test": "standard *.js"
   },
   "dependencies": {
-    "handlebars": "^4.0.11",
-    "mkdirp": "^0.5.1"
+    "handlebars": "^4.0.11"
   },
   "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-standard": "^3.1.0"
-  },
-  "peerDependencies": {
-    "grunt": ">=0.4.5"
+    "standard": "^10.0.3"
   },
   "keywords": [
-    "gruntplugin",
     "grunt-tasks",
+    "grunt-accessibility",
     "html",
     "reporter",
     "accessibility"

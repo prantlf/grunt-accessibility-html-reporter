@@ -1,9 +1,7 @@
 .git
 .gitignore
 .editorconfig
-.idea
 .npmignore
 .vscode
-Gruntfile.js
 node_modules
 npm-debug.log
