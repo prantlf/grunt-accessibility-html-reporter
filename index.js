@@ -6,6 +6,11 @@ const path = require('path')
 const template = handlebars.compile(fs.readFileSync(
           path.join(__dirname, 'template.hbs'), 'utf-8'))
 
+const objectValues = require('object.values')
+if (!Object.values) {
+  objectValues.shim()
+}
+
 module.exports = function (results) {
   var errorCount = 0
   var warningCount = 0
