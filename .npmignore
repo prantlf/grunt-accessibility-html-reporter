@@ -1,7 +1,10 @@
 .git
 .gitignore
 .editorconfig
+.eslintrc
 .npmignore
+.travis.yml
 .vscode
 node_modules
 npm-debug.log
+tests
