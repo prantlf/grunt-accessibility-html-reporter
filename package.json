@@ -1,7 +1,7 @@
 {
   "name": "grunt-accessibility-html-reporter",
   "description": "Formats JSON report of the grunt-accessibility task to HTML.",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
   "homepage": "https://github.com/prantlf/grunt-accessibility-html-reporter",
   "author": {
     "name": "Ferdinand Prantl",
@@ -27,13 +27,15 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "standard *.js"
+    "test": "standard *.js",
+    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
     "handlebars": "^4.0.11"
   },
   "devDependencies": {
-    "standard": "^10.0.3"
+    "standard": "^10.0.3",
+    "semantic-release": "^8.2.0"
   },
   "keywords": [
     "grunt-tasks",
