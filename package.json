@@ -27,11 +27,14 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "standard *.js",
+    "lint": "standard *.js tests/*.js",
+    "check": "tap tests/*.js",
+    "test": "npm run lint && npm run check",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "dependencies": {
-    "handlebars": "^4.0.11"
+    "handlebars": "^4.0.11",
+    "tap": "^10.7.3"
   },
   "devDependencies": {
     "standard": "^10.0.3",
