@@ -35,6 +35,7 @@ style.
 
 ## Release History
 
+ * 2017-11-25   v0.1.1   Support Node.js < 7
  * 2017-11-25   v0.1.0   Converted to a pure reporter module; the Grunt task
                          moved to grunt-accessibility-html-report-converter
  * 2017-11-22   v0.0.1   Initial release
@@ -52,5 +53,4 @@ Licensed under the MIT license.
 [Gruntfile]: https://gruntjs.com/sample-gruntfile
 [Getting Gtarted]: https://github.com/gruntjs/grunt/wiki/Getting-started
 [grunt-accessibility]: https://github.com/yargalot/grunt-accessibility
-[grunt-accessibility-html-report-converter]: https://github.com/prantlf/grunt-accessibility-html-report-converter
 [grunt-accessibility-html-report-converter]: https://github.com/prantlf/grunt-accessibility-html-report-converter
