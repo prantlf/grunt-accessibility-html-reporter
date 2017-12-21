@@ -30,16 +30,16 @@
     "lint": "standard *.js tests/*.js",
     "check": "tap tests/*.js",
     "test": "npm run lint && npm run check",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release"
   },
   "dependencies": {
     "handlebars": "^4.0.11",
     "object.values": "^1.0.4",
-    "tap": "^10.7.3"
+    "tap": "^11.0.0"
   },
   "devDependencies": {
     "standard": "^10.0.3",
-    "semantic-release": "^8.2.0"
+    "semantic-release": "^11.0.2"
   },
   "keywords": [
     "grunt-tasks",
