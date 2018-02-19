@@ -35,6 +35,8 @@ style.
 
 ## Release History
 
+ * 2018-02-19   v2.0.0   Change the HTML format to look like Koa11y reports
+ * 2018-02-19   v1.0.0   Change column numbers from zero-based to one-based
  * 2017-11-25   v0.1.1   Support Node.js < 7
  * 2017-11-25   v0.1.0   Converted to a pure reporter module; the Grunt task
                          moved to grunt-accessibility-html-report-converter
@@ -42,7 +44,7 @@ style.
 
 ## License
 
-Copyright (c) 2017 Ferdinand Prantl
+Copyright (c) 2017-2018 Ferdinand Prantl
 
 Licensed under the MIT license.
 

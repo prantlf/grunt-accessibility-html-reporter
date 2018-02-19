@@ -1,14 +1,68 @@
 'use strict'
 
 const fs = require('fs')
-const handlebars = require('handlebars')
-const path = require('path')
-const template = handlebars.compile(fs.readFileSync(
-          path.join(__dirname, 'template.hbs'), 'utf-8'))
 
 const objectValues = require('object.values')
 if (!Object.values) {
   objectValues.shim()
+}
+
+function formatFile (file) {
+  const messageLog = file.messageLog
+  var returnedErrors = ''
+  var returnedWarnings = ''
+  var returnedNotices = ''
+  var panelColor = ''
+
+  for (var i = 0; i < messageLog.length; i++) {
+    const message = messageLog[i]
+    const heading = message.heading
+    if (heading === 'WARNING') {
+      panelColor = 'warning'
+    } else if (heading === 'ERROR') {
+      panelColor = 'danger'
+    } else if (heading === 'NOTICE') {
+      panelColor = 'primary'
+    }
+
+    var element = message.element.node.split('<').join('&lt;')
+    var position = message.position
+    position = 'line: ' + position.lineNumber + ', column:' + (position.columnNumber + 1)
+    var entry =
+      '<div class="panel panel-' + panelColor + '">\n' +
+        '<div class="panel-heading">' + message.issue + '</div>\n' +
+        '<div class="panel-body">\n' +
+          message.description + '<br><br>\n' +
+          '<pre><code>' + element + '</code></pre>\n' +
+        '</div>\n' +
+        '<div class="panel-footer text-sm"><h4><small>' + position + '</small></h4></div>\n' +
+      '</div>\n'
+
+    if (heading === 'ERROR') {
+      returnedErrors = returnedErrors + entry
+    } else if (heading === 'WARNING') {
+      returnedWarnings = returnedWarnings + entry
+    } else if (heading === 'NOTICE') {
+      returnedNotices = returnedNotices + entry
+    }
+  }
+
+  const counters = file.counters
+  var buttonMarkup =
+      '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + counters.error + '</span></button>' +
+      '<button class="btn btn-sm btn-warning">Warnings <span class="badge">' + counters.warning + '</span></button>' +
+      '<button class="btn btn-sm btn-primary">Notices <span class="badge">' + counters.notice + '</span></button>'
+
+  const url = file.name
+  var content = returnedErrors + returnedWarnings + returnedNotices
+  content =
+      '    <div class="row">\n' +
+      '      <a href="javascript:void(0)"><h2>' + url + '</h2></a>' +
+      '      <span class="buttons">' + buttonMarkup + '</span>\n' +
+      '    </div>\n' +
+      '    <div class="row">' + content + '</div>\n'
+
+  return content
 }
 
 module.exports = function (results) {
@@ -17,35 +71,33 @@ module.exports = function (results) {
   var noticeCount = 0
 
   Object.keys(results)
-        .forEach(function (name) {
-          const file = results[name]
-          file.name = name
+    .forEach(function (name) {
+      const file = results[name]
+      file.name = name
 
-          const counters = file.counters
-          errorCount += counters.error
-          warningCount += counters.warning
-          noticeCount += counters.notice
+      const counters = file.counters
+      errorCount += counters.error
+      warningCount += counters.warning
+      noticeCount += counters.notice
+    })
 
-          const issues = file.messageLog
-          issues.forEach(function (issue) {
-            ++issue.position.columnNumber
-          })
-          file.errors = issues.filter(function (issue) {
-            return issue.heading === 'ERROR'
-          })
-          file.warnings = issues.filter(function (issue) {
-            return issue.heading === 'WARNING'
-          })
-          file.notices = issues.filter(function (issue) {
-            return issue.heading === 'NOTICE'
-          })
-          delete file.messageLog
-        })
+  var template = fs.readFileSync('template.html', 'utf8')
 
-  return template({
-    files: Object.values(results),
-    errorCount: errorCount,
-    warningCount: warningCount,
-    noticeCount: noticeCount
-  })
+  var buttonMarkup =
+      '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + errorCount + '</span></button>' +
+      '<button class="btn btn-sm btn-warning">Warnings <span class="badge">' + warningCount + '</span></button>' +
+      '<button class="btn btn-sm btn-primary">Notices <span class="badge">' + noticeCount + '</span></button>'
+
+  var heading =
+      '    <div class="row summary">\n' +
+      '      <h1>HTML Accessibility Report</h1>' +
+      '      <span class="buttons">' + buttonMarkup + '</span>\n' +
+      '    </div>\n'
+
+  var content = Object.values(results)
+    .map(formatFile)
+    .join('\n')
+
+  return template.replace('<!-- Heading goes here -->', heading)
+    .replace('<!-- Content goes here -->', content)
 }
