@@ -27,6 +27,9 @@ module.exports = function (results) {
           noticeCount += counters.notice
 
           const issues = file.messageLog
+          issues.forEach(function (issue) {
+            ++issue.position.columnNumber
+          })
           file.errors = issues.filter(function (issue) {
             return issue.heading === 'ERROR'
           })
