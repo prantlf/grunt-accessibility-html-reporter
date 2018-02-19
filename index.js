@@ -1,6 +1,7 @@
 'use strict'
 
 const fs = require('fs')
+const path = require('path')
 
 const objectValues = require('object.values')
 if (!Object.values) {
@@ -81,7 +82,8 @@ module.exports = function (results) {
       noticeCount += counters.notice
     })
 
-  var template = fs.readFileSync('template.html', 'utf8')
+  var template = fs.readFileSync(
+    path.join(__dirname, 'template.html'), 'utf8')
 
   var buttonMarkup =
       '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + errorCount + '</span></button>' +
