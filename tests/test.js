@@ -14,8 +14,21 @@ test.test('transforms JSON object to string in HTML format', test => {
   const file = path.join(__dirname, 'results', 'report.json')
   const results = JSON.parse(fs.readFileSync(file, 'utf-8'))
   const expected = fs.readFileSync(path.join(__dirname, 'results',
-    'report.html'), 'utf-8')
+    'full-path.html'), 'utf-8')
   const actual = report(results)
+  test.equal(typeof actual, 'string')
+  test.equal(expected, actual)
+  test.end()
+})
+
+test.test('optionally generates page titles from file names without directory', test => {
+  const file = path.join(__dirname, 'results', 'report.json')
+  const results = JSON.parse(fs.readFileSync(file, 'utf-8'))
+  const expected = fs.readFileSync(path.join(__dirname, 'results',
+    'name-only.html'), 'utf-8')
+  const actual = report(results, {
+    showFileNameOnly: true
+  })
   test.equal(typeof actual, 'string')
   test.equal(expected, actual)
   test.end()

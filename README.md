@@ -24,9 +24,19 @@ You can use the reporter programmatically to process validation results as an ob
 const report = require('grunt-accessibility-html-reporter')
 const input = fs.readFileSync('report.json', 'utf-8')
 const results = JSON.parse(input)
-const output = report(results)
+const output = report(results, {
+  showFileNameOnly: false
+})
 fs.writeFileSync('report.html', output, 'utf-8')
 ```
+
+### Options
+
+#### showFileNameOnly
+Type: `Boolean`
+Default value: `false`
+
+Cuts the directory from tested HTML files, when creating page titles from in the report. If you use unique names for files alone, you will not get too long page titles, if you flip this flag tp `true`.
 
 ## Contributing
 
@@ -35,6 +45,7 @@ style.
 
 ## Release History
 
+ * 2018-03-05   v2.2.0   Allow generating page titles from file names without directory
  * 2018-03-04   v2.1.0   Add filtering and accessibility to the reports
  * 2018-03-01   v2.0.2   Add \<meta charset="utf-8"\> to the HTML report page
  * 2018-02-19   v2.0.0   Change the HTML format to look like Koa11y reports

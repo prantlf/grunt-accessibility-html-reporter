@@ -69,7 +69,8 @@ function formatFile (file) {
   return content
 }
 
-module.exports = function (results) {
+module.exports = function (results, options) {
+  const showFileNameOnly = options && options.showFileNameOnly
   var errorCount = 0
   var warningCount = 0
   var noticeCount = 0
@@ -77,7 +78,14 @@ module.exports = function (results) {
   Object.keys(results)
     .forEach(function (name) {
       const file = results[name]
-      file.name = name
+      var fileName
+      if (showFileNameOnly) {
+        fileName = path.parse(name)
+        fileName = fileName.name + fileName.ext
+      } else {
+        fileName = name
+      }
+      file.name = fileName
 
       const counters = file.counters
       errorCount += counters.error
