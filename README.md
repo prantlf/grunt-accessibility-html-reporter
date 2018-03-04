@@ -35,6 +35,7 @@ style.
 
 ## Release History
 
+ * 2018-03-04   v2.1.0   Add filtering and accessibility to the reports
  * 2018-03-01   v2.0.2   Add \<meta charset="utf-8"\> to the HTML report page
  * 2018-02-19   v2.0.0   Change the HTML format to look like Koa11y reports
  * 2018-02-19   v1.0.0   Change column numbers from zero-based to one-based

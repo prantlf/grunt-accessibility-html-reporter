@@ -26,17 +26,22 @@ function formatFile (file) {
       panelColor = 'primary'
     }
 
-    var element = message.element.node.split('<').join('&lt;')
+    const issue = message.issue
+    const description = message.description.split('<').join('&lt;').split('"').join('&quot;')
+    const element = message.element.node.split('<').join('&lt;').split('"').join('&quot;')
     var position = message.position
-    position = 'line: ' + position.lineNumber + ', column:' + (position.columnNumber + 1)
-    var entry =
-      '<div class="panel panel-' + panelColor + '">\n' +
-        '<div class="panel-heading">' + message.issue + '</div>\n' +
+    const lineNumber = position.lineNumber
+    const columnNumber = position.columnNumber + 1
+    position = 'line: ' + lineNumber + ', column: ' + columnNumber
+    const audio = description + ' (at line ' + lineNumber + ' and column ' + columnNumber + ', code ' + issue + ')'
+    const entry =
+      '<div class="panel panel-' + panelColor + '" tabindex="0" aria-label="' + audio + '">\n' +
+        '<div class="panel-heading">' + issue + '</div>\n' +
         '<div class="panel-body">\n' +
-          message.description + '<br><br>\n' +
+          '<div class="message">' + description + '</div>\n' +
           '<pre><code>' + element + '</code></pre>\n' +
         '</div>\n' +
-        '<div class="panel-footer text-sm"><h4><small>' + position + '</small></h4></div>\n' +
+        '<div class="panel-footer text-sm"><span class="heading3" role="heading" aria-level="3">' + position + '</span></div>\n' +
       '</div>\n'
 
     if (heading === 'ERROR') {
@@ -49,19 +54,17 @@ function formatFile (file) {
   }
 
   const counters = file.counters
-  var buttonMarkup =
+  const buttonMarkup =
       '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + counters.error + '</span></button>' +
       '<button class="btn btn-sm btn-warning">Warnings <span class="badge">' + counters.warning + '</span></button>' +
       '<button class="btn btn-sm btn-primary">Notices <span class="badge">' + counters.notice + '</span></button>'
 
-  const url = file.name
-  var content = returnedErrors + returnedWarnings + returnedNotices
-  content =
-      '    <div class="row">\n' +
-      '      <a href="javascript:void(0)"><h2>' + url + '</h2></a>' +
+  const content =
+      '    <div class="row page">\n' +
+      '      <button type="button"><span class="heading2" role="heading" aria-level="2">' + file.name + '</span></button>' +
       '      <span class="buttons">' + buttonMarkup + '</span>\n' +
       '    </div>\n' +
-      '    <div class="row">' + content + '</div>\n'
+      '    <div class="row report">' + returnedErrors + returnedWarnings + returnedNotices + '</div>\n'
 
   return content
 }
@@ -82,21 +85,27 @@ module.exports = function (results) {
       noticeCount += counters.notice
     })
 
-  var template = fs.readFileSync(
+  const template = fs.readFileSync(
     path.join(__dirname, 'template.html'), 'utf8')
 
-  var buttonMarkup =
+  const buttonMarkup =
       '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + errorCount + '</span></button>' +
       '<button class="btn btn-sm btn-warning">Warnings <span class="badge">' + warningCount + '</span></button>' +
       '<button class="btn btn-sm btn-primary">Notices <span class="badge">' + noticeCount + '</span></button>'
 
-  var heading =
+  const messageFilter = 'Enter text to filter messages with'
+  const firstOccurrence = 'Warn about the first occurrence only'
+  const heading =
       '    <div class="row summary">\n' +
-      '      <h1>HTML Accessibility Report</h1>' +
+      '      <button type="button"><span class="heading1" role="heading" aria-level="1">HTML Accessibility Report</span></button>' +
       '      <span class="buttons">' + buttonMarkup + '</span>\n' +
+      '    </div>\n' +
+      '    <div class="row filters form-group">\n' +
+      '      <input id="message-filter" type="text" class="form-control input-lg" placeholder="' + messageFilter + '">\n' +
+      '      <label><input id="first-occurrences" type="checkbox" aria-checked="false" aria-label="' + firstOccurrence + '"> ' + firstOccurrence + '</label>\n' +
       '    </div>\n'
 
-  var content = Object.values(results)
+  const content = Object.values(results)
     .map(formatFile)
     .join('\n')
 
