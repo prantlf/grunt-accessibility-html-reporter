@@ -45,6 +45,7 @@ style.
 
 ## Release History
 
+ * 2018-04-27   v3.0.0   Dropped support of Node.js 4
  * 2018-03-05   v2.2.0   Allow generating page titles from file names without directory
  * 2018-03-04   v2.1.0   Add filtering and accessibility to the reports
  * 2018-03-01   v2.0.2   Add \<meta charset="utf-8"\> to the HTML report page
