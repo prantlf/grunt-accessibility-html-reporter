@@ -38,6 +38,13 @@ Default value: `false`
 
 Cuts the directory from tested HTML files, when creating page titles from in the report. If you use unique names for files alone, you will not get too long page titles, if you flip this flag tp `true`.
 
+#### showCommonPathOnly
+Type: `Boolean`
+Default value: `true`
+
+Cuts the same initial part of the path from tested HTML files, when the paths are used for page titles in the report. If you use sub-directories to organize your files, this option will make the file paths in the report short, but still unique. The default is flipped to `true` already.
+
+
 ## Contributing
 
 In lieu of a formal styleguide, take care to maintain the existing coding
@@ -45,6 +52,7 @@ style.
 
 ## Release History
 
+ * 2018-05-14   v3.1.0   Allow cutting the same initial part of the path from tested HTML files for displaying purposes
  * 2018-04-27   v3.0.0   Dropped support of Node.js 4
  * 2018-03-05   v2.2.0   Allow generating page titles from file names without directory
  * 2018-03-04   v2.1.0   Add filtering and accessibility to the reports

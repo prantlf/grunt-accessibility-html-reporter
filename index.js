@@ -1,7 +1,8 @@
 'use strict'
 
-const fs = require('fs')
-const path = require('path')
+const {getCommonPathLength} = require('common-path-start')
+const {readFileSync} = require('fs')
+const {basename, join} = require('path')
 
 const objectValues = require('object.values')
 if (!Object.values) {
@@ -10,12 +11,12 @@ if (!Object.values) {
 
 function formatFile (file) {
   const messageLog = file.messageLog
-  var returnedErrors = ''
-  var returnedWarnings = ''
-  var returnedNotices = ''
-  var panelColor = ''
+  let returnedErrors = ''
+  let returnedWarnings = ''
+  let returnedNotices = ''
+  let panelColor = ''
 
-  for (var i = 0; i < messageLog.length; i++) {
+  for (let i = 0; i < messageLog.length; i++) {
     const message = messageLog[i]
     const heading = message.heading
     if (heading === 'WARNING') {
@@ -29,7 +30,7 @@ function formatFile (file) {
     const issue = message.issue
     const description = message.description.split('<').join('&lt;').split('"').join('&quot;')
     const element = message.element.node.split('<').join('&lt;').split('"').join('&quot;')
-    var position = message.position
+    let position = message.position
     const lineNumber = position.lineNumber
     const columnNumber = position.columnNumber + 1
     position = 'line: ' + lineNumber + ', column: ' + columnNumber
@@ -69,19 +70,23 @@ function formatFile (file) {
   return content
 }
 
-module.exports = function (results, options) {
+module.exports = (results, options) => {
   const showFileNameOnly = options && options.showFileNameOnly
-  var errorCount = 0
-  var warningCount = 0
-  var noticeCount = 0
+  const showCommonPathOnly = !(options && options.showCommonPathOnly === false)
+  const commonPathLength = showCommonPathOnly &&
+    getCommonPathLength(Object.keys(results))
+  let errorCount = 0
+  let warningCount = 0
+  let noticeCount = 0
 
   Object.keys(results)
-    .forEach(function (name) {
+    .forEach(name => {
       const file = results[name]
-      var fileName
+      let fileName
       if (showFileNameOnly) {
-        fileName = path.parse(name)
-        fileName = fileName.name + fileName.ext
+        fileName = basename(name)
+      } else if (commonPathLength) {
+        fileName = name.substr(commonPathLength)
       } else {
         fileName = name
       }
@@ -93,8 +98,8 @@ module.exports = function (results, options) {
       noticeCount += counters.notice
     })
 
-  const template = fs.readFileSync(
-    path.join(__dirname, 'template.html'), 'utf8')
+  const template = readFileSync(
+    join(__dirname, 'template.html'), 'utf8')
 
   const buttonMarkup =
       '<button class="btn btn-sm btn-danger">Errors <span class="badge">' + errorCount + '</span></button>' +
