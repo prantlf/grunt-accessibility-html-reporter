@@ -1,8 +1,8 @@
 'use strict'
 
-const {getCommonPathLength} = require('common-path-start')
-const {readFileSync} = require('fs')
-const {basename, join} = require('path')
+const { getCommonPathLength } = require('common-path-start')
+const { readFileSync } = require('fs')
+const { basename, join } = require('path')
 
 const objectValues = require('object.values')
 if (!Object.values) {
