@@ -32,12 +32,12 @@
     "test": "npm run lint && npm run check"
   },
   "dependencies": {
-    "common-path-start": "^0.0.2",
+    "common-path-start": "^0.0.3",
     "object.values": "^1.1.0"
   },
   "devDependencies": {
     "standard": "^12.0.1",
-    "tap": "^12.6.0"
+    "tap": "^14.2.2"
   },
   "keywords": [
     "grunt-tasks",
